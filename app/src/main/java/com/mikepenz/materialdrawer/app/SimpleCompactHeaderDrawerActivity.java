@@ -33,11 +33,18 @@ public class SimpleCompactHeaderDrawerActivity extends AppCompatActivity {
     //save our header or result
     private AccountHeader headerResult = null;
     private Drawer result = null;
+    
+    private boolean selectionListShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
+        
+        if (savedInstanceState != null) {
+            selectionListShown = savedInstanceState.getBoolean("isSelectionListShown");
+            Log.i(TAG, "selection list is shown? " + selectionListShown);
+        }
 
         // Handle Toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -103,6 +110,11 @@ public class SimpleCompactHeaderDrawerActivity extends AppCompatActivity {
 
         // set the selection to the item with the identifier 5
         result.setSelection(5, false);
+        
+        // if selection list should be shown, then we should toggle the selection list
+        if (selectionListShown) {
+            headerResult.toggleSelectionList(this);
+        }
 
         //set the back arrow in the toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -115,6 +127,8 @@ public class SimpleCompactHeaderDrawerActivity extends AppCompatActivity {
         outState = result.saveInstanceState(outState);
         //add the values which need to be saved from the accountHeader to the bundle
         outState = headerResult.saveInstanceState(outState);
+        //add the selection state of the account header so that we can recover its state on orientation change
+        outState.putBoolean("isSelectionListShown", headerResult.isSelectionListShown());
         super.onSaveInstanceState(outState);
     }
 
