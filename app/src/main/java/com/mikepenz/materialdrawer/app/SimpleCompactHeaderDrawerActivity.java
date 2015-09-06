@@ -104,11 +104,6 @@ public class SimpleCompactHeaderDrawerActivity extends AppCompatActivity {
 
         // set the selection to the item with the identifier 5
         result.setSelection(5, false);
-        
-        // if selection list should be shown, then we should toggle the selection list
-        if (selectionListShown) {
-            headerResult.toggleSelectionList(this);
-        }
 
         //set the back arrow in the toolbar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
