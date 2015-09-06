@@ -21,7 +21,7 @@ public class AccountHeader {
     protected final static double NAVIGATION_DRAWER_ACCOUNT_ASPECT_RATIO = 9d / 16d;
 
     protected static final String BUNDLE_SELECTION_HEADER = "bundle_selection_header";
-
+    protected static final String BUNDLE_SELECTION_LIST_SHOWN = "bundle_section_list_shown";
 
     protected final AccountHeaderBuilder mAccountHeaderBuilder;
 
@@ -271,6 +271,7 @@ public class AccountHeader {
     public Bundle saveInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             savedInstanceState.putInt(BUNDLE_SELECTION_HEADER, mAccountHeaderBuilder.getCurrentSelection());
+            savedInstanceState.putBoolean(BUNDLE_SELECTION_LIST_SHOWN, mAccountHeaderBuilder.ismSelectionListShown());
         }
         return savedInstanceState;
     }
