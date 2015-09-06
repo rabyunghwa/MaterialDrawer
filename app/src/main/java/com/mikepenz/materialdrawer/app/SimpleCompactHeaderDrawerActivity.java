@@ -33,18 +33,11 @@ public class SimpleCompactHeaderDrawerActivity extends AppCompatActivity {
     //save our header or result
     private AccountHeader headerResult = null;
     private Drawer result = null;
-    
-    private boolean selectionListShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
-        
-        if (savedInstanceState != null) {
-            selectionListShown = savedInstanceState.getBoolean("isSelectionListShown");
-            Log.i(TAG, "selection list is shown? " + selectionListShown);
-        }
 
         // Handle Toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -57,24 +50,6 @@ public class SimpleCompactHeaderDrawerActivity extends AppCompatActivity {
         final IProfile profile3 = new ProfileDrawerItem().withName("Felix House").withEmail("felix.house@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile3));
         final IProfile profile4 = new ProfileDrawerItem().withName("Mr. X").withEmail("mister.x.super@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile4));
         final IProfile profile5 = new ProfileDrawerItem().withName("Batman").withEmail("batman@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile5));
-
-        // Create the AccountHeader
-        headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withCompactStyle(true)
-                .withHeaderBackground(R.drawable.header)
-                .addProfiles(
-                        profile,
-                        profile2,
-                        profile3,
-                        profile4,
-                        profile5,
-                        //don't ask but google uses 14dp for the add account icon in gmail but 20dp for the normal icons (like manage account)
-                        new ProfileSettingDrawerItem().withName("Add Account").withDescription("Add new GitHub Account").withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_add).actionBarSize().paddingDp(5).colorRes(R.color.material_drawer_dark_primary_text)).withIdentifier(PROFILE_SETTING),
-                        new ProfileSettingDrawerItem().withName("Manage Account").withIcon(GoogleMaterial.Icon.gmd_settings)
-                )
-                .withSavedInstance(savedInstanceState)
-                .build();
 
         //Create the drawer
         result = new DrawerBuilder()
@@ -107,6 +82,25 @@ public class SimpleCompactHeaderDrawerActivity extends AppCompatActivity {
                 })
                 .withSavedInstance(savedInstanceState)
                 .build();
+                
+                // Create the AccountHeader
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withCompactStyle(true)
+                .withHeaderBackground(R.drawable.header)
+                .withDrawer(result)
+                .addProfiles(
+                        profile,
+                        profile2,
+                        profile3,
+                        profile4,
+                        profile5,
+                        //don't ask but google uses 14dp for the add account icon in gmail but 20dp for the normal icons (like manage account)
+                        new ProfileSettingDrawerItem().withName("Add Account").withDescription("Add new GitHub Account").withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_add).actionBarSize().paddingDp(5).colorRes(R.color.material_drawer_dark_primary_text)).withIdentifier(PROFILE_SETTING),
+                        new ProfileSettingDrawerItem().withName("Manage Account").withIcon(GoogleMaterial.Icon.gmd_settings)
+                )
+                .withSavedInstance(savedInstanceState)
+                .build();
 
         // set the selection to the item with the identifier 5
         result.setSelection(5, false);
@@ -127,8 +121,6 @@ public class SimpleCompactHeaderDrawerActivity extends AppCompatActivity {
         outState = result.saveInstanceState(outState);
         //add the values which need to be saved from the accountHeader to the bundle
         outState = headerResult.saveInstanceState(outState);
-        //add the selection state of the account header so that we can recover its state on orientation change
-        outState.putBoolean("isSelectionListShown", headerResult.isSelectionListShown());
         super.onSaveInstanceState(outState);
     }
 
