@@ -90,6 +90,14 @@ public class AccountHeaderBuilder {
         this.mCompactStyle = compactStyle;
         return this;
     }
+    
+    public boolean ismSelectionListShown() {
+        return mSelectionListShown;
+    }
+
+    public void setmSelectionListShown(boolean mSelectionListShown) {
+        this.mSelectionListShown = mSelectionListShown;
+    }
 
     // the typeface used for textViews within the AccountHeader
     protected Typeface mTypeface;
@@ -769,6 +777,14 @@ public class AccountHeaderBuilder {
                     switchProfiles(mProfiles.get(selection));
                 }
             }
+            
+            //boolean isSectionListShown = mSavedInstance.getBoolean(AccountHeader.BUNDLE_SELECTION_LIST_SHOWN);
+            setmSelectionListShown(mSavedInstance.getBoolean(AccountHeader.BUNDLE_SELECTION_LIST_SHOWN));
+            Log.i("AccountHeaderBuilder: ", "build account header selection list is shown? " + ismSelectionListShown());
+            if (ismSelectionListShown()) {
+                setmSelectionListShown(false);
+                toggleSelectionList(mActivity);
+            }
         }
 
         //everything created. now set the header
@@ -1163,16 +1179,16 @@ public class AccountHeaderBuilder {
     protected void toggleSelectionList(Context ctx) {
         if (mDrawer != null) {
             //if we already show the list. reset everything instead
-            if (mDrawer.switchedDrawerContent()) {
+            if (ismSelectionListShown()) {
                 resetDrawerContent(ctx);
-                mSelectionListShown = false;
+                setmSelectionListShown(false);
             } else {
                 //build and set the drawer selection list
                 buildDrawerSelectionList();
 
                 // update the arrow image within the drawer
                 mAccountSwitcherArrow.setImageDrawable(new IconicsDrawable(ctx, MaterialDrawerFont.Icon.mdf_arrow_drop_up).sizeDp(24).paddingDp(6).color(mTextColor));
-                mSelectionListShown = true;
+                setmSelectionListShown(true);
             }
         }
     }
