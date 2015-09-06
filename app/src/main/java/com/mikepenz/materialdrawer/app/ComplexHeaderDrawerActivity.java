@@ -55,9 +55,6 @@ public class ComplexHeaderDrawerActivity extends AppCompatActivity {
         profile4 = new ProfileDrawerItem().withName("Mr. X").withEmail("mister.x.super@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile4)).withIdentifier(4);
         profile5 = new ProfileDrawerItem().withName("Batman").withEmail("batman@gmail.com").withIcon(getResources().getDrawable(R.drawable.profile5));
 
-        // Create the AccountHeader
-        buildHeader(false, savedInstanceState);
-
         //Create the drawer
         result = new DrawerBuilder()
                 .withActivity(this)
@@ -92,8 +89,9 @@ public class ComplexHeaderDrawerActivity extends AppCompatActivity {
                 )
                 .withSavedInstance(savedInstanceState)
                 .build();
-
-
+                
+        // Create the AccountHeader
+        buildHeader(false, savedInstanceState);
     }
 
     /**
@@ -108,6 +106,7 @@ public class ComplexHeaderDrawerActivity extends AppCompatActivity {
         headerResult = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.header)
+                .withDrawer(result)
                 .withCompactStyle(compact)
                 .addProfiles(
                         profile,
